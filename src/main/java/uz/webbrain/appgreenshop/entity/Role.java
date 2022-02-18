@@ -1,18 +1,19 @@
 package uz.webbrain.appgreenshop.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 import uz.webbrain.appgreenshop.entity.template.AbcEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role extends AbcEntity {
@@ -20,4 +21,16 @@ public class Role extends AbcEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Role role = (Role) o;
+        return getId() != null && Objects.equals(getId(), role.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

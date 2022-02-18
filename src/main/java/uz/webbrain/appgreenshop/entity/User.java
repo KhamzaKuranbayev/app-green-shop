@@ -1,9 +1,7 @@
 package uz.webbrain.appgreenshop.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.Hibernate;
 import uz.webbrain.appgreenshop.entity.template.AbcEntity;
 
@@ -13,7 +11,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -32,6 +33,7 @@ public class User extends AbcEntity {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
 
     public User(Set<Role> roles) {

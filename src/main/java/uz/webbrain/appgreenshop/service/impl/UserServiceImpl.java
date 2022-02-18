@@ -2,6 +2,11 @@ package uz.webbrain.appgreenshop.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.webbrain.appgreenshop.dto.UserCreateDto;
 import uz.webbrain.appgreenshop.entity.Role;
@@ -9,6 +14,7 @@ import uz.webbrain.appgreenshop.entity.User;
 import uz.webbrain.appgreenshop.exception.NotFoundException;
 import uz.webbrain.appgreenshop.repository.RoleRepository;
 import uz.webbrain.appgreenshop.repository.UserRepository;
+import uz.webbrain.appgreenshop.rest.responses.Response;
 import uz.webbrain.appgreenshop.service.UserService;
 
 import java.util.HashSet;
@@ -46,10 +52,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-
     @Override
-    public List<User> findAllUser() {
-        return userRepository.findAll();
+    public Response findAllPages(Integer page, Integer size, Sort sort) {
+        Pageable pageable = PageRequest.of(0, 20, Sort.by("createAt"));
+        Page<User> userPage = userRepository.findAll(pageable);
+        List<User> userList = userPage.getContent();
+
+        Response response = new Response(true, "User List", userList, HttpStatus.OK);
+        response.getMap().put("size", userPage.getSize());
+        response.getMap().put("total_elements", userPage.getTotalElements());
+        response.getMap().put("total_pages", userPage.getTotalPages());
+        return response;
     }
 
 

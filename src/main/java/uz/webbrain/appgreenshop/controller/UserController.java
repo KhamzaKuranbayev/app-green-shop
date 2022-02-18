@@ -1,9 +1,13 @@
 package uz.webbrain.appgreenshop.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.webbrain.appgreenshop.dto.UserCreateDto;
 import uz.webbrain.appgreenshop.entity.User;
+import uz.webbrain.appgreenshop.rest.responses.Response;
 import uz.webbrain.appgreenshop.service.UserService;
 
 import java.util.List;
@@ -20,9 +24,14 @@ public class UserController {
         return userService.saveUser(dto);
     }
 
-    @GetMapping
-    public List<User> findAll() {
-        return userService.findAllUser();
+
+    @GetMapping("/page/list")
+    public HttpEntity<?> findAllPageable(@RequestParam("page") Integer page,
+                                         @RequestParam("page") Integer size,
+                                         @RequestParam("page") Sort sort) {
+        Response response = userService.findAllPages(page, size, sort);
+        return ResponseEntity.status(response.isSuccess() ? 200 : 500).body(response);
+
     }
 
 
