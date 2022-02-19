@@ -7,10 +7,11 @@ package uz.webbrain.appgreenshop.entity;
  */
 
 import lombok.*;
-import org.hibernate.Hibernate;
+import uz.webbrain.appgreenshop.entity.template.AbcEntity;
+import uz.webbrain.appgreenshop.enums.PlantSize;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,29 +20,30 @@ import java.util.Objects;
 @NoArgsConstructor
 @Entity
 @Table(name = "plant")
-public class Plant {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Plant extends AbcEntity {
+
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "description", nullable = false, unique = true)
     private String description;
+
     @ManyToOne
-    @JoinColumn(name = "category_id_id")
-    private Category category_id;
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    // BU RELATED BO'LGAN PLANT ID SI
     @ManyToOne
-    @JoinColumn(name = "related_id")
+    @JoinColumn(name = "related_id", nullable = true)
     private Plant related;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Plant plant = (Plant) o;
-        return id != null && Objects.equals(id, plant.id);
-    }
+    @Enumerated(EnumType.STRING)
+    private PlantSize size;
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+    @ManyToOne
+    @JoinColumn(name = "parent_id", nullable = true)
+    private Plant parent;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }
