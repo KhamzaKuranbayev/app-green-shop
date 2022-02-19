@@ -37,7 +37,6 @@ public class User extends AbcEntity {
     public User(Set<Role> roles) {
         this.roles = roles;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
