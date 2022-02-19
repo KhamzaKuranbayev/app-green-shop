@@ -25,7 +25,7 @@ public class Plant extends AbcEntity {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "name")
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
