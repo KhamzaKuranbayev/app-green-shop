@@ -37,4 +37,10 @@ public class User extends AbcEntity {
     public User(Set<Role> roles) {
         this.roles = roles;
     }
+
+    /**
+     * Hozir shopping_cartda malumotlar bormi
+     * yo`'q buni CRUD ini siz qilishingiz kerak to'g'rimi?
+     * ha uni 1marta yozdim unchalik qiyin mas yana yozvolaman en muhimi shungacha yetib keldik
+     */
 }
