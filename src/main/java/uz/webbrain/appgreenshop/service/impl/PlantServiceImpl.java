@@ -10,6 +10,7 @@ import uz.webbrain.appgreenshop.dto.request.PlantCreateDto;
 import uz.webbrain.appgreenshop.dto.response.Response;
 import uz.webbrain.appgreenshop.entity.Category;
 import uz.webbrain.appgreenshop.entity.Plant;
+import uz.webbrain.appgreenshop.enums.PlantSize;
 import uz.webbrain.appgreenshop.exception.PlantNotFoundException;
 import uz.webbrain.appgreenshop.repository.PlantRepository;
 import uz.webbrain.appgreenshop.service.CategoryService;
@@ -26,13 +27,17 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Plant save(PlantCreateDto dto) {
-        Plant parentPlant = findById(dto.getPlantId());
+        Plant relatedPlant = findById(dto.getRelatedId());
+        Plant parentPlant = findById(dto.getParentId());
         Plant plant = new Plant();
         plant.setName(dto.getName());
         plant.setDescription(dto.getDescription());
         Category category = categoryService.findById(dto.getCategoryId());
         plant.setCategory(category);
-        plant.setRelated(parentPlant);
+        plant.setRelated(relatedPlant);
+        plant.setSize(PlantSize.getSize(dto.getSize()));
+        plant.setParent(parentPlant);
+        plant.setCreatedAt(dto.getCreatedAt());
         return plantRepository.save(plant);
     }
 
@@ -42,8 +47,8 @@ public class PlantServiceImpl implements PlantService {
     }
 
     @Override
-    public Response findAllPageable(Integer page, Integer size, Sort sort) {
-        Pageable pageable = PageRequest.of(0, 2, Sort.by("createdAt"));
+    public Response findAllPageable(Pageable pageable) {
+//        Pageable pageable = PageRequest.of(0, 2, Sort.by("createdAt"));
         Page<Plant> plantRepositoryAll = plantRepository.findAll(pageable);
         List<Plant> plantList = plantRepositoryAll.getContent();
         Response response = new Response(true, "Plant List", plantList);
@@ -55,6 +60,8 @@ public class PlantServiceImpl implements PlantService {
 
     @Override
     public Plant findById(Long id) {
+        if(id == null)
+            return null;
         Plant plant = null;
         Optional<Plant> optionalPlant = plantRepository.findById(id);
         if (optionalPlant.isPresent())
@@ -67,12 +74,16 @@ public class PlantServiceImpl implements PlantService {
         Plant plant = findById(id);
         if (plant == null)
             throw new PlantNotFoundException("Plant id{" + id + "} not found");
-        Plant parentPlant = findById(dto.getPlantId());
+        Plant parentPlant = findById(dto.getParentId());
+        Plant relatedPlant = findById(dto.getRelatedId());
         plant.setName(dto.getName());
         plant.setDescription(dto.getDescription());
         Category category = categoryService.findById(dto.getCategoryId());
         plant.setCategory(category);
-        plant.setRelated(parentPlant);
+        plant.setRelated(relatedPlant);
+        plant.setSize(PlantSize.valueOf(dto.getSize()));
+        plant.setParent(parentPlant);
+        plant.setCreatedAt(dto.getCreatedAt());
         return plantRepository.save(plant);
     }
 

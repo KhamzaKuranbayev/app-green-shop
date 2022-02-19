@@ -25,7 +25,7 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     public DeliveryAddress add(DeliveryAddressDto dto) {
 
         Optional<User> optionalUser = userRepository.findById(dto.getUserId());
-        if (optionalUser.isEmpty())
+        if (!optionalUser.isPresent())
             throw new NotFoundException("This User Id " + dto.getUserId() + " Not Found");
         User user = optionalUser.get();
 
