@@ -1,14 +1,16 @@
 package uz.webbrain.appgreenshop.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import uz.webbrain.appgreenshop.dto.RoleCreateDto;
 import uz.webbrain.appgreenshop.entity.Role;
 import uz.webbrain.appgreenshop.rest.responses.Response;
 import uz.webbrain.appgreenshop.service.RoleService;
+import uz.webbrain.appgreenshop.utils.ApiPageable;
 
 import java.util.List;
 
@@ -25,11 +27,10 @@ public class RoleController {
     }
 
 
+    @ApiPageable
     @GetMapping("/page/list")
-    public HttpEntity<?> findAllPageable(@RequestParam("page") Integer page,
-                                         @RequestParam("page") Integer size,
-                                         @RequestParam("page") Sort sort) {
-        Response response = roleService.findAllPageable(page, size, sort);
+    public HttpEntity<?> findAllPageable(@ApiIgnore Pageable pageable) {
+        Response response = roleService.findAllPageable(pageable);
         return ResponseEntity.status(response.isSuccess() ? 200 : 500).body(response);
     }
 

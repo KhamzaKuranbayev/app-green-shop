@@ -2,9 +2,7 @@ package uz.webbrain.appgreenshop.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.webbrain.appgreenshop.dto.OrderCreateDto;
@@ -18,7 +16,6 @@ import uz.webbrain.appgreenshop.rest.responses.Response;
 import uz.webbrain.appgreenshop.service.OrderService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -45,8 +42,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Response findAllPageable(Integer page, Integer size, Sort sort) {
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdAt"));
+    public Response findAllPageable(Pageable pageable) {
         Page<Order> orderPage = orderRepository.findAll(pageable);
         List<Order> orderList = orderPage.getContent();
 

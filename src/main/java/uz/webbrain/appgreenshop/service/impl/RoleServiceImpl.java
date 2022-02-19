@@ -2,13 +2,10 @@ package uz.webbrain.appgreenshop.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.webbrain.appgreenshop.dto.RoleCreateDto;
-import uz.webbrain.appgreenshop.entity.Order;
 import uz.webbrain.appgreenshop.entity.Role;
 import uz.webbrain.appgreenshop.exception.NotFoundException;
 import uz.webbrain.appgreenshop.repository.RoleRepository;
@@ -35,8 +32,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public Response findAllPageable(Integer page, Integer size, Sort sort) {
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("createdAt"));
+    public Response findAllPageable(Pageable pageable) {
         Page<Role> rolePage = roleRepository.findAll(pageable);
         List<Role> roleList = rolePage.getContent();
 

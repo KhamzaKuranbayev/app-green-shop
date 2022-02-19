@@ -1,11 +1,9 @@
 package uz.webbrain.appgreenshop.service;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import uz.webbrain.appgreenshop.dto.OrderCreateDto;
-import uz.webbrain.appgreenshop.entity.Order;
 import uz.webbrain.appgreenshop.rest.responses.Response;
 
-import java.util.List;
 
 public interface OrderService {
     Response saveOrder(OrderCreateDto dto);
@@ -16,5 +14,5 @@ public interface OrderService {
 
     Response removeOrderById(Long orderId);
 
-    Response findAllPageable(Integer page, Integer size, Sort sort);
+    Response findAllPageable(Pageable pageable);
 }

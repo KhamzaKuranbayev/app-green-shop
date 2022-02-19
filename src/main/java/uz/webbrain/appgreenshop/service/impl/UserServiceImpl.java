@@ -3,9 +3,7 @@ package uz.webbrain.appgreenshop.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.webbrain.appgreenshop.dto.UserCreateDto;
@@ -53,8 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response findAllPages(Integer page, Integer size, Sort sort) {
-        Pageable pageable = PageRequest.of(0, 20, Sort.by("createAt"));
+    public Response findAllPages(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
         List<User> userList = userPage.getContent();
 

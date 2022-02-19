@@ -1,16 +1,15 @@
 package uz.webbrain.appgreenshop.service;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import uz.webbrain.appgreenshop.dto.RoleCreateDto;
 import uz.webbrain.appgreenshop.entity.Role;
 import uz.webbrain.appgreenshop.rest.responses.Response;
 
-import java.util.List;
 
 public interface RoleService {
     Role saveRole(RoleCreateDto dto);
 
-    Response findAllPageable(Integer page, Integer size, Sort sort);
+    Response findAllPageable(Pageable pageable);
 
     Role findById(Long roleId);
 

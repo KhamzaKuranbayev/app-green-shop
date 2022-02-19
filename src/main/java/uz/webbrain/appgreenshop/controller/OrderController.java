@@ -2,19 +2,22 @@ package uz.webbrain.appgreenshop.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 import uz.webbrain.appgreenshop.dto.OrderCreateDto;
 import uz.webbrain.appgreenshop.rest.responses.Response;
 import uz.webbrain.appgreenshop.service.OrderService;
+import uz.webbrain.appgreenshop.utils.ApiPageable;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/orders")
 public class OrderController {
+
     private final OrderService orderService;
 
 
@@ -24,11 +27,10 @@ public class OrderController {
     }
 
 
+    @ApiPageable
     @GetMapping("/page/list")
-    public HttpEntity<?> findAllPageable(@RequestParam("page") Integer page,
-                                         @RequestParam("page") Integer size,
-                                         @RequestParam("page") Sort sort) {
-        Response response = orderService.findAllPageable(page, size, sort);
+    public HttpEntity<?> findAllPageable(@ApiIgnore Pageable pageable) {
+        Response response = orderService.findAllPageable(pageable);
         return ResponseEntity.status(response.isSuccess() ? 200 : 500).body(response);
     }
 

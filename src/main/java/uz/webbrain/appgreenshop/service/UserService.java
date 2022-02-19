@@ -1,11 +1,10 @@
 package uz.webbrain.appgreenshop.service;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import uz.webbrain.appgreenshop.dto.UserCreateDto;
 import uz.webbrain.appgreenshop.entity.User;
 import uz.webbrain.appgreenshop.rest.responses.Response;
 
-import java.util.List;
 
 public interface UserService {
 
@@ -17,5 +16,5 @@ public interface UserService {
 
     String removeUser(Long userId);
 
-    Response findAllPages(Integer page, Integer size, Sort sort);
+    Response findAllPages(Pageable pageable);
 }
